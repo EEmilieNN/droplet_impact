@@ -280,7 +280,7 @@ data_dir = os.path.join(current_dir, '..', 'data', 'inputs')
 sys.path.append(data_dir)
 
 # Importer le module (remplace 'data_vargas_2011' par le nom réel du fichier sans l'extension .py)
-import data_vargas_2011 as data
+from . import data_vargas_2011 as data
 
 def plot_comparaison_deltav(sols, param, cfgs):
     # Plot the results
