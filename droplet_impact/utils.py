@@ -9,7 +9,6 @@ from . import config as cfg
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 from . import physics_model as pm
-from . import visualization as vis
 
 def extract_data(feuille, x_range, y_range):
     x_data = []
