@@ -5,7 +5,7 @@ from scipy.stats import linregress
 import pandas as pd
 from openpyxl import load_workbook
 import numpy as np
-import config as cfg
+from . import config as cfg
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 import physics_model as pm
