@@ -29,7 +29,7 @@ def linear_regression(x, y):
 
 def corrected_speed(x,vv,diameter, nose_radius, n):
     """
-    Calculate the reduced speed of the blade.
+    Calculate the reduced speed of the blade. Configuration RET.
     """
     time_span = (0, 0.1)  # Time span for the simulation
     time_steps = np.linspace(time_span[0], time_span[1], 100000)  # Time steps for evaluation
@@ -39,7 +39,7 @@ def corrected_speed(x,vv,diameter, nose_radius, n):
     res = []
     for v in vv:
         cfg.V_blade = v
-        initial_conditions = [cfg.x0, cfg.vx0, cfg.y0, cfg.vy0, cfg.a0, cfg.va0,-0.2,v] # Initial conditions for the droplet
+        initial_conditions = [0, 0, 0, -v_terminal(diameter/2 *1e3), diameter/2, 0,-0.2,v] # Initial conditions for the droplet
         mod = pm.RaindropModel(initial_conditions)
         events = [mod.hit_the_blade]
         sol = solve_ivp(mod.droplet_equations, time_span, initial_conditions, t_eval=time_steps, method='RK45',events=events)
@@ -48,7 +48,7 @@ def corrected_speed(x,vv,diameter, nose_radius, n):
 
 def impact_speed_vertical(initial_conditions, time_span, time_steps, nose_radius, n, initial_radius, blade_speed):
     """
-    Calculate the impact speed of the droplet on the blade.
+    Calculate the impact speed of the droplet on the blade. Configuration real turbine.
     """
     cfg.R = initial_radius
     cfg.Rc_alpha = nose_radius
