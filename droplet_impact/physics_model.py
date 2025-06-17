@@ -1,4 +1,4 @@
-import config as cfg
+from . import config as cfg
 import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import fsolve

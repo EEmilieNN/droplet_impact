@@ -1,10 +1,10 @@
 import numpy as np
 from scipy.integrate import solve_ivp
-import config as cfg
+from . import config as cfg
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
-import physics_model as pm
-import visualization as vis
+from . import physics_model as pm
+from . import visualization as vis
 
 
 
