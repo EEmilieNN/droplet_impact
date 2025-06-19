@@ -10,8 +10,7 @@ from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 from . import physics_model as pm
 import joblib
-import importlib.resources as pkg_resources
-from . import data
+import importlib.resources
 
 
 def extract_data(feuille, x_range, y_range):
@@ -71,13 +70,11 @@ def v_terminal(r):
     d = 2*r
     return A[0] + A[1]*d + A[2]*d**2 + A[3]*d**3 + A[4]*d**4 + A[5]*d**5 + A[6]*d**6 + A[7]*d**7 + A[8]*d**8 + A[9]*d**9
 
-# Use importlib to open the file from the package
 def load_interpolator():
-    with pkg_resources.files(data).joinpath("impact_speed_interpolator.pkl").open('rb') as f:
-        interpolator = joblib.load(f)
-    return interpolator
+    # Use the string name of your package and relative path
+    with importlib.resources.files("droplet_impact.data").joinpath("impact_speed_interpolator.pkl").open("rb") as f:
+        return joblib.load(f)
 
-# Lazy load
 _interpolator = None
 
 def get_impact_speed(V_blade, R, Rc, n):

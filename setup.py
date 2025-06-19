@@ -5,6 +5,9 @@ setup(
     version='0.1.0',
     packages=find_packages(),
     install_requires=[],
+    package_data={
+        'droplet_impact': ['data/*.pkl'],
+    },
     author='Emilien Gouffault',
     author_email='emilien.gouffault@gmail.com',
     description='This package was created for a DTU Wind&Energy Systems project to calculate the impact speeds of droplets on wind turbine blades.',
