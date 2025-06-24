@@ -4,7 +4,7 @@ setup(
     name='droplet_impact',
     version='0.1.0',
     packages=find_packages(),
-    install_requires=['numpy', 'scipy', 'matplotlib','sklearn','joblib','pandas','time'],
+    install_requires=['numpy', 'scipy', 'matplotlib','scikit-learn','joblib','pandas','time'],
     package_data={
         'droplet_impact': ['data/*.pkl'],
     },
