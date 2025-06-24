@@ -17,6 +17,13 @@ class RaindropModel:
         }
 
     def droplet_equations(self, t, z):
+        """Differential equations for the droplet motion and forces acting on it. Configuration RET.
+        Args:
+            t (float): Time variable.
+            z (list): State variables [x, vx, y, vy, a, va, x_blade, vx_blade].
+        Returns:
+            list: Derivatives of the state variables."""
+        
         x, vx, y, vy, a, va, x_blade, vx_blade = z
 
         b = (cfg.R**3) / (a**2)  # Semi-minor axis of the droplet
@@ -85,24 +92,56 @@ class RaindropModel:
         return [dx_dt, dvx_dt, dy_dt, dvy_dt, da_dt, dva_dt, dxblade_dt, 0] 
     
     def hit_the_blade(self,t,z):
+        """Terminal function to check if the droplet has hit the blade.
+        Args:
+            t (float): Time variable.
+            z (list): State variables [x, vx, y, vy, a, va, x_blade, vx_blade].
+        Returns:
+            float: Condition for terminal event (droplet hitting the blade)."""
+        
         return z[0] - z[6] - 1e-12  # Check if the droplet has hit the blade
     hit_the_blade.terminal = True
 
     def droplet_breakup(self,t,z):
+        """Terminal function to check if the droplet has reached its maximum size.
+        Args:
+            t (float): Time variable.
+            z (list): State variables [x, vx, y, vy, a, va, x_blade, vx_blade].
+        Returns:
+            float: Condition for terminal event (droplet breakup)."""
+        
         We = (cfg.rho_air * cfg.V_blade**2 * 2 * z[4]) / cfg.sigma_water
         return z[4] - cfg.R * min(2.2, 3.4966 * We)
     droplet_breakup.terminal = True  
 
     def get_forces_table(self):
+        """
+        Get the forces acting on the droplet calculated during the model as a pandas DataFrame.
+        Returns:
+            pd.DataFrame: DataFrame containing the forces acting on the droplet.
+        """
         return pd.DataFrame(self.forces)
 
     def b(self, t, z):
+        """Terminal function to check if the droplet has reached a too important semi-major axis.
+        Args:
+            t (float): Time variable.
+            z (list): State variables [x, vx, y, vy, a, va, x_blade, vx_blade].
+        Returns:
+            float: Condition for terminal event (droplet semi-major axis)."""
         a = z[4]
-        return 1 - (cfg.R**3 / (a**2))**2 / a**2 - 1e-12  # Semi-minor axis of the droplet
+        return 1 - (cfg.R**3 / (a**2))**2 / a**2 - 1e-12  # Semi-major axis of the droplet
     b.terminal = True
 
 
     def droplet_equations_vertical(self, t, z):
+        """Differential equations for the droplet motion and forces acting on it in vertical direction. Configuration real turbine.
+        Args:
+            t (float): Time variable.
+            z (list): State variables [x, vx, a, va, x_blade, vx_blade].  No y variable is used in this configuration, the x-axis is the vertical axis.
+        Returns:
+            list: Derivatives of the state variables."""
+        
         x, vx, a, va, x_blade, vx_blade = z
 
         b = (cfg.R**3) / (a**2)  # Semi-minor axis of the droplet
@@ -168,6 +207,12 @@ class RaindropModel:
         return [dx_dt, dvx_dt, da_dt, dva_dt, dxblade_dt, 0] 
     
     def hit_the_blade_vertical(self,t,z):
+        """Terminal function to check if the droplet has hit the blade in vertical configuration.
+        Args:
+            t (float): Time variable.
+            z (list): State variables [x, vx, a, va, x_blade, vx_blade].
+        Returns:
+            float: Condition for terminal event (droplet hitting the blade)."""
         return z[0] - z[4] - 1e-12
     hit_the_blade_vertical.terminal = True
 
