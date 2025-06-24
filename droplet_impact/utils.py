@@ -14,6 +14,14 @@ import importlib.resources
 
 
 def extract_data(feuille, x_range, y_range):
+    """    Extract data from an Excel sheet for linear regression.
+    Args:
+        feuille (openpyxl.worksheet.worksheet.Worksheet): The worksheet from which to extract data.
+        x_range (str): The range of cells for the x data (e.g., 'A1:A10').
+        y_range (str): The range of cells for the y data (e.g., 'B1:B10').
+    Returns:
+        tuple: Two numpy arrays containing the x and y data extracted from the specified ranges.
+    """
     x_data = []
     y_data = []
     for row in feuille[x_range]:
@@ -32,7 +40,16 @@ def linear_regression(x, y):
 def corrected_speed(x,vv,diameter, nose_radius, n):
     """
     Calculate the reduced speed of the blade. Configuration RET.
+    Args:
+        x (array): initial droplet position. (useless for the function, but kept for compatibility)
+        vv (array): Array of blade speeds in m/s.
+        diameter (float): Diameter of the droplets in meters.
+        nose_radius (float): Nose radius of the blade in meters.
+        n (float): n parameter for the model.
+    Returns:
+        array: The reduced speed of the blade at the given positions.
     """
+
     time_span = (0, 0.1)  # Time span for the simulation
     time_steps = np.linspace(time_span[0], time_span[1], 100000)  # Time steps for evaluation
     cfg.R = diameter / 2
@@ -50,7 +67,17 @@ def corrected_speed(x,vv,diameter, nose_radius, n):
 
 def impact_speed_vertical(initial_conditions, time_span, time_steps, nose_radius, n, initial_radius, blade_speed):
     """
-    Calculate the impact speed of the droplet on the blade. Configuration real turbine.
+    Calculate the impact speed of the droplet on the blade with our model. Configuration real turbine.
+    Args:
+        initial_conditions (list): Initial conditions for the droplet [x, vx, a, va, x_blade, V_blade].
+        time_span (tuple): Time span for the simulation (start, end). (default: (0, 0.1))
+        time_steps (array): Time steps for evaluation. (default: np.linspace(0, 0.1, 100000))
+        nose_radius (float): Nose radius of the blade in meters. 
+        n (float): n parameter for the model.
+        initial_radius (float): Initial radius of the droplet in meters.
+        blade_speed (float): Speed of the blade in m/s.
+    Returns:
+        float: The impact speed of the droplet on the blade.
     """
     cfg.R = initial_radius
     cfg.Rc_alpha = nose_radius
@@ -61,16 +88,24 @@ def impact_speed_vertical(initial_conditions, time_span, time_steps, nose_radius
     sol = solve_ivp(mod.droplet_equations_vertical, time_span, initial_conditions, t_eval=time_steps, method='DOP853',events=events, rtol=1e-6, atol=1e-8)
     return blade_speed-sol.y[1,-1]
 
-
+# Coefficients for the terminal velocity calculation based on the droplet diameter, from Foote and du Toit model (1969).
 A = [-8.5731540e-2, 3.3265862, 4.3843578, -6.8813414, 4.7570205, -1.9046601, 4.6339978e-1,-6.7607898e-2, 5.4455480e-3,-1.8631087e-4]
 def v_terminal(r):
     """
     Calculate the terminal velocity of a raindrop based on its radius and the given coefficients.
+    Args:
+        r (float): Radius of the droplet in mm.
+    Returns:
+        float: The terminal velocity of the droplet in m/s.
     """
     d = 2*r
     return A[0] + A[1]*d + A[2]*d**2 + A[3]*d**3 + A[4]*d**4 + A[5]*d**5 + A[6]*d**6 + A[7]*d**7 + A[8]*d**8 + A[9]*d**9
 
 def load_interpolator():
+    """Load the impact speed interpolator from a pickle file.
+    Returns:
+        joblib.Parallel: The loaded interpolator."""
+    
     # Use the string name of your package and relative path
     with importlib.resources.files("droplet_impact.data").joinpath("impact_speed_interpolator.pkl").open("rb") as f:
         return joblib.load(f)
@@ -78,12 +113,22 @@ def load_interpolator():
 _interpolator = None
 
 def get_impact_speed(V_blade, R, Rc, n):
+    """Calculate the impact speed of a droplet on a blade using an interpolator based on the multiple simulations done.
+    Args:
+        V_blade (float): Blade speed in m/s.
+        R (float): Radius of the blade in m.
+        Rc (float): Nose radius of the blade in m.
+        n (float): n parameter for the model.
+    Returns:
+        float: The calculated impact speed."""
+    
     global _interpolator
     if _interpolator is None:
         _interpolator = load_interpolator()
     point = np.array([[V_blade, R, Rc, n]])
     return _interpolator(point)[0]
 
+### NREL and IEA points for n and Rc
 points_n_nrel = [
     [0.19858261842596042, 1.6543080939947783],
     [0.21589863574197776, 1.6543080939947783],
@@ -223,6 +268,15 @@ x_rc_nrel = np.array(points_rc_nrel)[:, 0]
 y_rc_nrel = np.array(points_rc_nrel)[:, 1]
 
 def calculate_value(r, points, is_log_scale=False):
+    """Calculate the value at position r based on linear interpolation between points (data from Barfknecht 2024).
+    Args:
+        r (float): Position on the blade, normalized between 0 and 1.
+        points (list): List of points where each point is a tuple (x, y).
+        is_log_scale (bool): If True, use logarithmic scale for y values.
+    Returns:
+        float: The interpolated value at position r, or None if r is out of bounds
+    """
+
     for i in range(len(points) - 1):
         x0, y0 = points[i]
         x1, y1 = points[i + 1]
@@ -241,6 +295,14 @@ def calculate_value(r, points, is_log_scale=False):
     return None
 
 def n(model, r):
+    """Calculate the n parameter based on the model and place on the turbine.
+    
+    Args:
+        model (str): The model to use, either 'nrel' or 'iea'.
+        r (float): Position on the blade, normalized between 0 and 1.
+    Returns:
+        float: The calculated n value."""
+    
     if model == 'nrel':
         return calculate_value(r, points_n_nrel)
     elif model == 'iea':
@@ -249,6 +311,15 @@ def n(model, r):
         raise ValueError("Invalid model. Choose either 'nrel' or 'iea'.")
 
 def rc(model, r):
+    """Calculate the Rc parameter based on the model and place on the turbine.
+
+    Args:
+        model (str): The model to use, either 'nrel' or 'iea'.
+        r (float): Position on the blade, normalized between 0 and 1.
+
+    Returns:
+        float: The calculated rc value."""
+    
     if model == 'nrel':
         return calculate_value(r, points_rc_nrel, is_log_scale=True)
     elif model == 'iea':
