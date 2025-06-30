@@ -126,7 +126,10 @@ def get_impact_speed(V_blade, R, Rc, n):
     if _interpolator is None:
         _interpolator = load_interpolator()
     point = np.array([[V_blade, R, Rc, n]])
-    return _interpolator(point)[0]
+    try:
+        return _interpolator(point)[0]
+    except ValueError as e:
+        return 0.0
 
 ### NREL and IEA points for n and Rc
 points_n_nrel = [
