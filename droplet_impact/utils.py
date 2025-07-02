@@ -329,4 +329,3 @@ def rc(model, r):
         return calculate_value(r, points_rc_iea, is_log_scale=True)
     else:
         raise ValueError("Invalid model. Choose either 'nrel' or 'iea'.")
-
