@@ -1,0 +1,59 @@
+\begin{thebibliography}{1}
+
+\bibitem{hannesdottir2024}
+\'{A}sta Hannesd\'ottir, Stephan~T. Kral, Joachim Reuder, and Charlotte~Bay
+  Hasager.
+\newblock Rain erosion atlas for wind turbine blades based on era5 and nora3
+  for scandinavia.
+\newblock {\em Results in Engineering}, 22:102010, 2024.
+
+\bibitem{Barfknecht2024}
+N.~Barfknecht and D.~von Terzi.
+\newblock Aerodynamic interaction of rain and wind turbine blades: the
+  significance of droplet slowdown and deformation for leading-edge erosion.
+\newblock {\em Wind Energy Science}, 9(12):2333--2357, 2024.
+
+\bibitem{Bech2022}
+Jakob~Ilsted Bech, Nicolai Frost-Jensen Johansen, Martin~Bonde Madsen, Ásta
+  Hannesdóttir, and Charlotte~Bay Hasager.
+\newblock Experimental study on the effect of drop size in rain erosion test
+  and on lifetime prediction of wind turbine blades.
+\newblock {\em Renewable Energy}, 195:91--102, 2022.
+
+\bibitem{foote1969terminal}
+G.~B. Foote and P.~S. du~Toit.
+\newblock Terminal velocity of raindrops aloft.
+\newblock {\em Journal of Applied Meteorology}, 8(2):249--253, 1969.
+
+\bibitem{NREL2009}
+{National Renewable Energy Laboratory}.
+\newblock Definition of a 5-mw reference wind turbine for offshore system
+  development.
+\newblock Technical Report NREL/TP-500-38060, National Renewable Energy
+  Laboratory, Golden, CO, 2009.
+
+\bibitem{IEA2020}
+{National Renewable Energy Laboratory}.
+\newblock Land-based wind market report: 2020 edition.
+\newblock Technical Report NREL/TP-5000-75698, National Renewable Energy
+  Laboratory, Golden, CO, 2020.
+
+\bibitem{SLOT2015837}
+H.M. Slot, E.R.M. Gelinck, C.~Rentrop, and E.~{van der Heide}.
+\newblock Leading edge erosion of coated wind turbine blades: Review of coating
+  life models.
+\newblock {\em Renewable Energy}, 80:837--848, 2015.
+
+\bibitem{Sor2016}
+Suthyvann Sor, Adelaida Garcia-Magariño, and Angel Velazquez.
+\newblock Model to predict water droplet trajectories in the flow past an
+  airfoil.
+\newblock {\em Aerospace Science and Technology}, 58, 08 2016.
+
+\bibitem{Vargas2010}
+Mario Vargas and Alex Feo.
+\newblock Deformation and breakup of water droplets near an airfoil leading
+  edge.
+\newblock {\em Journal of Aircraft}, 48(5):1749--1765, 2011.
+
+\end{thebibliography}
