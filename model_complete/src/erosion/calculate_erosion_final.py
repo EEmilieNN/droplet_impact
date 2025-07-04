@@ -49,7 +49,7 @@ def tip_speed(wsp, turbine):
     Returns:
         ts_inter (array_like): The tip speed of the selected wind turbine
     """
-    ts_file = 'droplet_impact/model_complete/tip_speed/' + turbine + '.csv'
+    ts_file = 'droplet_impact/model_complete/erosion_data/tip_speed/' + turbine + '.csv'
     ts_data = pd.read_csv(ts_file)
     ts_inter = np.interp(wsp, ts_data['wsp'], ts_data['tip_speed'], left=0, right=0)
     return ts_inter

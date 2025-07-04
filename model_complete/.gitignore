@@ -19,4 +19,6 @@ data/ERA5_some_t2m_land_data.nc
 data/atlas_layers.nc
 plots/
 plots/offshore_damage_onset.png
+docs/
+docs/figures/
 
