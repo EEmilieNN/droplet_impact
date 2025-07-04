@@ -29,9 +29,11 @@ cd droplet_impact
 Example of importing and using the model:
 
 ```python
-from droplet_impact.physics_model import calculer_impact
-# Use the module's functions as needed
+import droplet_impact.utils as ut
+V = ut.get_impact_speed(V_blade,R,Rc,n)
 ```
+# Use the module's functions as needed
+
 
 ## References
 
