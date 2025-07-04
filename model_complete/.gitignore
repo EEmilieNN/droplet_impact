@@ -1,0 +1,22 @@
+# Ignore the outputfiles #
+damage_increments.nc
+# Ignore my work in progress file
+select_area.py
+# OS generated files #
+######################
+.ipynb_checkpoints
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+calculate_erosion.py.orig
+data/ERA5_some_t2m_land_data.nc
+#data/NORA3_statistics.nc
+#data/atlas_layers_1.nc
+data/atlas_layers.nc
+plots/
+plots/offshore_damage_onset.png
+
