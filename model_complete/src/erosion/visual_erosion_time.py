@@ -6,20 +6,20 @@ from dask.diagnostics import ProgressBar
 from droplet_impact import utils as ut
 
 
-WINDFARM = 'anholt'  # Change to 'anholt' if needed
+WINDFARM = 'anholt'  # Change to 'billund' if needed
 
 # Read the data from the file (chose the windfarm you want to use)
 if WINDFARM == 'billund':
-    df = pd.read_csv('droplet_impact/modele_complete/erosion_data/results/damage_increments_billund.csv')
-    df_theta = pd.read_csv('droplet_impact/modele_complete/erosion_data/results/damage_increments_billund_theta.csv')
-    df_corr = pd.read_csv('droplet_impact/modele_complete/erosion_data/results/damage_increments_billund_corr.csv')
-    df_ini = pd.read_csv('droplet_impact/modele_complete/erosion_data/results/damage_increments_billund_ini.csv')
+    df = pd.read_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_billund.csv')
+    df_theta = pd.read_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_billund_theta.csv')
+    df_corr = pd.read_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_billund_corr.csv')
+    df_ini = pd.read_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_billund_ini.csv')
 
 elif WINDFARM == 'anholt':
-    df = pd.read_csv('droplet_impact/modele_complete/erosion_data/results/damage_increments_anholt.csv')
-    df_theta = pd.read_csv('droplet_impact/modele_complete/erosion_data/results/damage_increments_anholt_theta.csv')
-    df_corr = pd.read_csv('droplet_impact/modele_complete/erosion_data/results/damage_increments_anholt_corr.csv')
-    df_ini = pd.read_csv('droplet_impact/modele_complete/erosion_data/results/damage_increments_anholt_ini.csv')
+    df = pd.read_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_anholt.csv')
+    df_theta = pd.read_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_anholt_theta.csv')
+    df_corr = pd.read_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_anholt_corr.csv')
+    df_ini = pd.read_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_anholt_ini.csv')
 
 def plot_impinged_rain_and_damage(df_corr, df_ini, df_theta, df):
     # Sort dataframes by time
