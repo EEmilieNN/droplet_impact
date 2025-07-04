@@ -49,7 +49,7 @@ def tip_speed(wsp, turbine):
     Returns:
         ts_inter (array_like): The tip speed of the selected wind turbine
     """
-    ts_file = 'droplet_impact/era5_erosion_atlas/tip_speed/' + turbine + '.csv'
+    ts_file = 'droplet_impact/model_complete/tip_speed/' + turbine + '.csv'
     ts_data = pd.read_csv(ts_file)
     ts_inter = np.interp(wsp, ts_data['wsp'], ts_data['tip_speed'], left=0, right=0)
     return ts_inter
@@ -370,10 +370,10 @@ def impinged_rain_theta(wsp, rainfall, dt, turbine, droplet_d=None, v_term=None,
 WINDFARM = 'AnholtHavn'  # Change to 'Billund' if needed
 
 if WINDFARM == 'Billund':
-    file_path = 'droplet_impact/era5_erosion_atlas/data/meteorological_data/Billund.txt'
+    file_path = 'droplet_impact/model_complete/erosion_data/meteorological_data/Billund.txt'
 
 elif WINDFARM == 'AnholtHavn':
-    file_path = 'droplet_impact/era5_erosion_atlas/data/meteorological_data/AnholtHavn.txt'
+    file_path = 'droplet_impact/model_complete/erosion_data/meteorological_data/AnholtHavn.txt'
 
 time_slice = slice('2010-01-01T00:00:00.000000000','2019-12-31T23:00:00.000000000')
 hub_height = 150
@@ -414,9 +414,9 @@ df['damage_inc'] = damage_inc
 
 # Save the results to a CSV file
 if WINDFARM == 'AnholtHavn':
-    df.to_csv('droplet_impact/era5_erosion_atlas/data/results/damage_increments_anholt_ini.csv')
+    df.to_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_anholt_ini.csv')
 elif WINDFARM == 'Billund':
-    df.to_csv('droplet_impact/era5_erosion_atlas/data/results/damage_increments_billund_ini.csv')
+    df.to_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_billund_ini.csv')
 
 print("Tests completed successfully.")
 print("\n")
@@ -456,9 +456,9 @@ df['damage_inc'] = damage_inc
 
 # Save the results to a CSV file
 if WINDFARM == 'AnholtHavn':
-    df.to_csv('droplet_impact/era5_erosion_atlas/data/results/damage_increments_anholt_corr.csv')
+    df.to_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_anholt_corr.csv')
 elif WINDFARM == 'Billund':
-    df.to_csv('droplet_impact/era5_erosion_atlas/data/results/damage_increments_billund_corr.csv')
+    df.to_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_billund_corr.csv')
 
 
 print("Tests completed successfully.")
@@ -501,9 +501,9 @@ df['damage_inc'] = damage_inc
 
 # Save the results to a CSV file
 if WINDFARM == 'AnholtHavn':
-    df.to_csv('droplet_impact/era5_erosion_atlas/data/results/damage_increments_anholt_theta.csv')
+    df.to_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_anholt_theta.csv')
 elif WINDFARM == 'Billund':
-    df.to_csv('droplet_impact/era5_erosion_atlas/data/results/damage_increments_billund_theta.csv')
+    df.to_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_billund_theta.csv')
 
 
 print("Tests completed successfully.")
@@ -546,9 +546,9 @@ df['damage_inc'] = damage_inc
 
 # Save the results to a CSV file
 if WINDFARM == 'AnholtHavn':
-    df.to_csv('droplet_impact/era5_erosion_atlas/data/results/damage_increments_anholt_theta_corr.csv')
+    df.to_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_anholt_theta_corr.csv')
 elif WINDFARM == 'Billund':
-    df.to_csv('droplet_impact/era5_erosion_atlas/data/results/damage_increments_billund_theta_corr.csv')
+    df.to_csv('droplet_impact/model_complete/erosion_data/results/damage_increments_billund_theta_corr.csv')
 
 print("Tests completed successfully.")
 print("\n")
