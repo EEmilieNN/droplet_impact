@@ -1,0 +1,42 @@
+
+# Rain Droplet Impact on Wind Turbine Blade
+
+This repository provides a set of Python tools to model, analyze, and visualize the impact of rain droplets on wind turbine blades. It includes modules for configuration, physical modeling, experimental data interpolation, and results visualization.
+
+## Project Structure
+
+- `droplet_impact/`: main source code for the droplet impact model.
+  - `config.py`: model configuration parameters.
+  - `physics_model.py`: physical modeling functions for droplet impact.
+  - `utils.py`: utility functions such as : get_impact_speed(V_blade, R_droplet, Rc, n) returning V_impact, V_terminal(R_droplet) returning the fall speed of the droplet, n(model,r/R_blade) and Rc(model, r/R_blade) returning the geometry parameters of the two turbines : NREL_5MW and IEA_15MW.
+  - `data/`: experimental data and interpolation files.
+
+## Installation
+
+1. Import the package
+```bash
+pip install git+https://github.com/EEmilieNN/droplet_impact.git
+```
+
+2. To modify or use the model locally, you can clone this repository:
+```bash
+git clone https://github.com/EEmilieNN/droplet_impact.git
+cd droplet_impact
+```
+
+## Usage
+
+Example of importing and using the model:
+
+```python
+from droplet_impact.physics_model import calculer_impact
+# Use the module's functions as needed
+```
+
+## References
+
+Scientific articles and experimental data are provided in the `Documentation/` folder for further understanding of the phenomenon.
+
+## Author
+
+Emilien Gouffault (emilien.gouffault@polytechnique.org)
