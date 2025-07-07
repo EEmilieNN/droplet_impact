@@ -331,8 +331,37 @@ Finally, when $D=1$, the blade is considered to have failed and we obtain the li
 
 \subsubsection*{Simulation and Results}
 We conducted a simulation to estimate the lifetime expectancy of the blades based on the impact velocities calculated in the previous section. We used the same methodology as in the previous section, but this time we used Hannesdóttir's model and code \cite{hannesdottir2024} and data from era5.
+\par We had to modify Asta's code to adapt it to our model, as the original code was designed for xarray objects. The era5 data provided contains the wind speed at 10 meters above the ground, which is not the same as the wind speed at the blade height. We used a power law profile to estimate the wind speed at the blade height, which is a common practice in meteorology. The power law profile is given by:
+\begin{align}
+    v_{blade} = v_{10} \left(\frac{z}{10}\right)^{\alpha}
+\end{align}
+where \( v_{10} \) is the wind speed at 10 meters above the ground, \( z \) is the height of the blade, and \( \alpha \) is the power law exponent, which we used as \( \alpha = 0.143 \) according to Hannesdóttir's model \cite{hannesdottir2024}.
 
-\section*{Conclusion}
+\vspace{5mm}
+\par We conducted several tests for different data sets, to compare the lifetime expectancy of the IEA 15MW turbine. First we focused on the impact of the two different parts of our model, which is the impact speed reduction, and the angle integration.
+\par Figure ~\ref{fig:accumulated_damage_billund} (resp. ~\ref{fig:accumulated_damage_anholt}) shows the accumulated damage of the IEA 15MW turbine over time for Billund (resp. Anholt Havn), with and without the impact speed reduction, and with and without the angle integration. 
+\textbf{CHANGE THE FIGURE !!!!!!!!!!!!!!!!!!!}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/comparison_billund.png}
+    \caption{Accumulated damage of the IEA 15MW turbine (Billund, 2002 - 2020).}
+    \label{fig:accumulated_damage_billund}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/comparison_anholt.png}
+    \caption{Accumulated damage of the IEA 15MW turbine (Anholt Havn, 2002 - 2020).}
+    \label{fig:accumulated_damage_anholt}
+\end{figure}
+
+Finally, we can compare the average lifetime expectancy of this turbine with and without the impact speed reduction, and with and without the angle integration. In order to compare it with previous studies, we used Bech's 2022 results \cite{Bech2022} for 18 places in Denmark. Figure~\ref{fig:average_lifetime_expectancy} shows the average lifetime expectancy of the IEA 15MW turbine with and without our model.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/average_lifetime_expectancy.png}
+    \caption{Average lifetime expectancy of the IEA 15MW turbine with and without our model.}
+    \label{fig:average_lifetime_expectancy}
+\end{figure}
 \bibliographystyle{plain}
 \bibliography{references}
 
