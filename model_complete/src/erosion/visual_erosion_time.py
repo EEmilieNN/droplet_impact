@@ -68,57 +68,69 @@ def plot_impinged_rain_and_damage(df_corr, df_ini, df_theta, df):
 #plot_impinged_rain_and_damage(df_corr, df_ini, df_theta,df)
 
 def plot_bar_chart(folder_path):
-    """This function plots a bar chart of the average time before failure for each file, with and without correction."""
+    """Plot a bar chart of average time before failure (with and without correction) for each file."""
     
-    plt.figure(figsize=(10, 6))
-    # Loop through all files in the folder
-    for filename in os.listdir(folder_path):
-        if filename.endswith('.txt'):
-            print(f"Processing file: {filename}")
-            file_path = os.path.join(folder_path, filename)
-            df = pd.read_csv(
-                file_path,
-                sep=r"\s+",
-                comment="#",
-                names=["year", "month", "day", "hour", "minute", "ws", "dir", "hyw", "hyT", "r10m"]
-            )
-            df["time"] = pd.to_datetime(df[["year", "month", "day", "hour", "minute"]])
-            df = df.drop(columns=["year", "month", "day", "hour", "minute"])
-            df = df.set_index("time").sort_index()
+    corrected_times = []
+    initial_times = []
+    file_labels = []
 
-            # Create derived columns
-            df["rainfall"] = df.apply(lambda row: row["r10m"] if row["hyT"] in [1, 7] else 0, axis=1)
+    # Sort files alphabetically
+    filenames = sorted(f for f in os.listdir(folder_path) if f.endswith('.txt'))
 
-            # Check for negative and NaN values
-            neg_count = (df < 0).sum()
-            nan_count = df.isnull().sum()
+    for filename in filenames:
+        print(f"Processing file: {filename}")
+        file_path = os.path.join(folder_path, filename)
+        df = pd.read_csv(
+            file_path,
+            sep=r"\s+",
+            comment="#",
+            names=["year", "month", "day", "hour", "minute", "ws", "dir", "hyw", "hyT", "r10m"]
+        )
+        df["time"] = pd.to_datetime(df[["year", "month", "day", "hour", "minute"]])
+        df = df.drop(columns=["year", "month", "day", "hour", "minute"])
+        df = df.set_index("time").sort_index()
 
-            # Parameters for the function
-            dt = 600
-            turbine_type = 'IEA_15MW'
-            ws_valid = df['ws'].values
-            rain_valid = df['rainfall'].values
+        # Derived columns
+        df["rainfall"] = df.apply(lambda row: row["r10m"] if row["hyT"] in [1, 7] else 0, axis=1)
 
-            # Run the impinged rain function
-            rainfall_b, damage_inc = calc.ds_impinged_rain_theta(ws_valid, rain_valid, dt, 'IEA_15MW')
-            df['rainfall_b'] = rainfall_b
-            df['damage_inc'] = damage_inc
+        # Parameters
+        dt = 600
+        turbine_type = 'IEA_15MW'
+        ws_valid = df['ws'].values
+        rain_valid = df['rainfall'].values
 
-            initial_rainfall_b, initial_damage_inc = calc.ds_impinged_rain(ws_valid, rain_valid, dt, 'IEA_15MW')
-            df['initial_rainfall_b'] = initial_rainfall_b
-            df['initial_damage_inc'] = initial_damage_inc
+        # Run model
+        rainfall_b, damage_inc = calc.ds_impinged_rain_theta(ws_valid, rain_valid, dt, turbine_type)
+        df['damage_inc'] = damage_inc
 
-            # Mean damage
-            mean_damage = df['damage_inc'].mean()
-            mean_initial_damage = df['initial_damage_inc'].mean()
-            t_corrected = 6*24*365/mean_damage
-            t_initial = 6*24*365/mean_initial_damage
+        _, initial_damage_inc = calc.ds_impinged_rain(ws_valid, rain_valid, dt, turbine_type)
+        df['initial_damage_inc'] = initial_damage_inc
 
-            # Plotting
-            plt.bar(['Corrected Damage', 'Initial Damage'], [t_corrected, t_initial], color=['blue', 'orange'], label = os.path.splitext(filename)[0])
-            plt.ylabel('Time before failure (s)')
-    plt.title(f'Time to Corrected Damage vs Initial Damage for {filename}')
+        # Time before failure
+        mean_damage = df['damage_inc'].mean()
+        mean_initial_damage = df['initial_damage_inc'].mean()
+        t_corrected = 1 / ( mean_damage * 6 * 24 * 365)
+        t_initial = 1 / (mean_initial_damage * 6 * 24 * 365)
+
+        # Store values
+        corrected_times.append(t_corrected)
+        initial_times.append(t_initial)
+        file_labels.append(os.path.splitext(filename)[0])
+
+    # Plot
+    x = range(len(file_labels))
+    width = 0.35
+
+    plt.figure(figsize=(12, 6))
+    plt.bar([i - width/2 for i in x], corrected_times, width=width, color='blue', label='Corrected Damage')
+    plt.bar([i + width/2 for i in x], initial_times, width=width, color='orange', label='Initial Damage')
+
+    plt.xticks(x, file_labels, rotation=45, ha='right')
+    plt.ylabel('Time before failure (s)')
+    plt.title('Corrected vs Initial Time to Failure by File')
+    plt.legend()
     plt.grid(axis='y')
+    plt.tight_layout()
     plt.show()
 
 # Call the function to plot the bar chart
