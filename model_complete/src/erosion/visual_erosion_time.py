@@ -126,7 +126,7 @@ def plot_bar_chart(folder_path):
     plt.bar([i + width/2 for i in x], initial_times, width=width, color='orange', label='Initial Damage')
 
     plt.xticks(x, file_labels, rotation=45, ha='right')
-    plt.ylabel('Time before failure (s)')
+    plt.ylabel('Time before failure (years)')
     plt.title('Corrected vs Initial Time to Failure by File')
     plt.legend()
     plt.grid(axis='y')
