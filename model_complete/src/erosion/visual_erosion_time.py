@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from dask.diagnostics import ProgressBar
 from droplet_impact import utils as ut
-import calculate_erosion_final as calc
+#import calculate_erosion_final as calc
 import os
 
-PLACE = 'anholt'  # Change to 'billund' if needed
+PLACE = 'billund'  # Change to 'billund' if needed
 
 # Read the data from the file (chose the windfarm you want to use)
 if PLACE == 'billund':
@@ -65,7 +65,7 @@ def plot_impinged_rain_and_damage(df_corr, df_ini, df_theta, df):
     plt.show()
 
 # Call the function to plot
-#plot_impinged_rain_and_damage(df_corr, df_ini, df_theta,df)
+plot_impinged_rain_and_damage(df_corr, df_ini, df_theta,df)
 
 def plot_bar_chart(folder_path):
     """Plot a bar chart of average time before failure (with and without correction) for each file."""
@@ -134,4 +134,4 @@ def plot_bar_chart(folder_path):
     plt.show()
 
 # Call the function to plot the bar chart
-plot_bar_chart('droplet_impact/model_complete/erosion_data/meteorological_data/')
+#plot_bar_chart('droplet_impact/model_complete/erosion_data/meteorological_data/')
