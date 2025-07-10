@@ -144,7 +144,9 @@ def ds_impinged_rain(wsp, rainfall, dt, turbine, droplet_d=None, v_term=None, dr
     return rainfall_b, damage_inc
 
 def ds_impinged_rain_theta(wsp, rainfall, dt, turbine, droplet_d=None, v_term=None, drop_dep='softsign'):
-    """A function that calculates impinged rain on a blade tip and corresponding damage increments with angle dependency and speed correction.
+    """
+    FINAL FUNCTION
+    A function that calculates impinged rain on a blade tip and corresponding damage increments with angle dependency and speed correction.
  
     Args:
         wsp (arra_type): Wind speed at hub height
@@ -196,8 +198,8 @@ def ds_impinged_rain_theta(wsp, rainfall, dt, turbine, droplet_d=None, v_term=No
                 v_corrected[i] = ut.get_impact_speed(
                     v_tip[i] - v_term[i] * (1+np.sin(t)),
                     droplet_d[i]*1e-3 / 2,
-                    ut.rc('iea', 0.998),
-                    ut.n('iea', 0.998)
+                    ut.rc('nrel', 0.998),
+                    ut.n('nrel', 0.998)
                 )        
         else:
             v_corrected = v_tip
