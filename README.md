@@ -25,7 +25,7 @@ This repository provides a set of Python tools to model, analyze, and visualize 
      - `RETanalysis.ipynb`: shows the impact of droplets speed reduction in the RET.
      - `computed_results.ipynb`: creates the interpolator that gives us get_impact_speed.
      - `results.ipynb`, `vertical_tests.ipynb`.
-
+  - `plots`: interesting plots for the paper
 
 
 ## Installation
